@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Container\Attributes\Tag;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,12 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->call(UserSeeder::class);
+        $this->call(CategorySeeder::class);
         $this->call(PostSeeder::class);
+        $this->call(ImageSeeder::class);
+        $this->call(CommentSeeder::class);
+        $this->call(LikeSeeder::class);
+        $this->call(TagSeeder::class);
     }
 }

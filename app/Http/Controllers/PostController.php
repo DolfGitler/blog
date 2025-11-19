@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Image;
+use Illuminate\Container\Attributes\Auth as AttributesAuth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class PostController extends Controller
 {
@@ -13,7 +18,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderByDesc('created_at')->paginate();
+        $posts = Post::latest()->with(['images', 'user'])->paginate();
+        if(request()->wantsJson()) {
+            return $posts;
+        }
         return view('posts.index', compact('posts'));
     }
 
@@ -31,7 +39,23 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $post = new Post($request->validated());
+        // $post->user_id = Auth::user()->id;
+        $post->category()->associate(1);
+        if($request->wantsJson()){
+            $post->user()->associate(1);
+        } else {
+            $post->user()->associate(Auth::user());
+        }
         $post->save();
+
+       if($request->file('images')) {
+            foreach($request->file('images') as $uploadedFile) {
+                $image = new Image();
+                $image->path = $uploadedFile->store('', ['disk' => 'public']);
+                $image->post()->associate($post);
+                $image->save();
+            }
+        }
         return redirect()->route('posts.index');
     }
 
@@ -40,7 +64,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+       return view('posts.show', compact('post'));
     }
 
     /**
@@ -48,7 +72,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+         return view('posts.edit', compact('post'));
     }
 
     /**
@@ -57,6 +81,16 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         //
+        // $post->title = $request->input('title');
+        // $post->body = $request->input('body');
+
+        // $post->fill($request->validated());
+        // $post->save();
+        $post->update($request->validated());
+        if($request->wantsJson()) {
+            return $post;
+        }
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -64,6 +98,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+           $post->delete();
+           if(request()->wantsJson()){
+            return $post;
+        }
+        return redirect()->route('posts.index');
     }
 }

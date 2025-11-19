@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-theme = "dark">
+<html lang="en" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,8 @@
 <body>
     @include('partials.nav')
     <div class="container mx-auto mt-2">
-    @yield('content')
+        @yield('content')
     </div>
 </body>
+
 </html>
