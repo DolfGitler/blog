@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Image;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class PostController extends Controller
 {
@@ -13,7 +17,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
         $posts = Post::latest()->Paginate();
         return view('posts.index', compact('posts'));
     }
@@ -23,7 +26,6 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
         return view('posts.create');
     }
 
@@ -32,10 +34,19 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
-        $post = new Post($request->validated());
 
+        $post = new Post($request->validated());
+        // $post->user_id = Auth::user()->id;
+        $post->user()->associate(Auth::user());
         $post->save();
+        if ($request->file('image')) {
+            foreach ($request->file('images') as $uploadedFile) {
+                $image = new Image();
+                $image->path = $uploadedFile->store('', ['disk' => 'public']);
+                $image->post()->associate($post);
+                $image->save();
+            }
+        }
         return redirect()->route('posts.index');
     }
 
@@ -45,6 +56,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -52,7 +64,6 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
         return view('posts.edit', compact('post'));
     }
 
@@ -61,7 +72,6 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
 
         $post->update($request->validated());
         return redirect()->route('posts.index');
@@ -72,7 +82,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
         $post->delete();
         return redirect()->route('posts.index');
     }
