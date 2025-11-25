@@ -18,8 +18,13 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Post::class)->constrained()->cascadeOnDelete();
             $table->unique(['user_id','post_id']);
-            //$table->integer('value');
-            //$table->enum('value', ['👍', '😂', '😠']);
+
+            // $table->integer('value');
+
+            // $table->enum('value',['👍','👎','🤡', '😂','😡']);
+
+            // $table->string('value');
+            // $table->unique(['user_id','post_id','value']);
             $table->timestamps();
         });
     }

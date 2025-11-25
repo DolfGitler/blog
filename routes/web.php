@@ -4,6 +4,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
@@ -11,6 +12,7 @@ Route::get('/page1', [PublicController::class, 'page1'])->name('page1');
 Route::get('/page2', [PublicController::class, 'page2'])->name('page2');
 Route::get('/post/{post}', [PublicController::class, 'post'])->name('post');
 Route::get('/tag/{tag}', [Publiccontroller::class, 'tag'])->name('tag');
+Route::get('/category/{category}', [Publiccontroller::class, 'category'])->name('category');
 
 // Route::get('/admin/posts', [PostController::class, 'index'])->name('posts.index');
 // Route::get('/admin/posts/create', [PostController::class, 'create'])->name('posts.create');
@@ -25,10 +27,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
     Route::get('/admin/posts/{post}/view', [PostController::class, 'show'])->name('posts.show');
 
     Route::resource('/admin/posts', PostController::class);
+    Route::resource('/admin/tags', TagController::class);
+
 
     Route::post('/post/{post}/like', [LikeController::class, 'store'])->name('post.like');
 

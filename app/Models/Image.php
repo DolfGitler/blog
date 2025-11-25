@@ -12,16 +12,16 @@ class Image extends Model
     /** @use HasFactory<\Database\Factories\ImageFactory> */
     use HasFactory;
 
-    public function post() {
+    public function post(){
         return $this->belongsTo(Post::class);
     }
 
-     public function url():Attribute {
-        return Attribute::get(function (){
+    public function url():Attribute {
+        return Attribute::get(function(){
             if(substr($this->path, 0, 4) === 'http') {
                 return $this->path;
             }
             return Storage::url($this->path);
         });
-        }
+    }
 }

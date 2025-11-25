@@ -17,31 +17,33 @@
         @csrf
         @method('patch')
 
-         <fieldset class="fieldset">
-                    <legend class="fieldset-legend">{{ __('Name') }}</legend>
-                    <input value="{{ old('name', $user->name) }}" name="name" type="text"
-                        class="input w-full @error('name') input-error @enderror" placeholder="name" />
-                    @error('name')
-                        <p class="label text-error">{{ $message }}</p>
-                    @enderror
-                </fieldset>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend">{{ __('Name') }}</legend>
+            <input value="{{ old('name', $user->name) }}" name="name" type="text" required autofocus
+                autocomplete="name" class="input w-full @error('name') input-error @enderror" placeholder="Name" />
+            @error('name')
+                <p class="label text-error">{{ $message }}</p>
+            @enderror
+        </fieldset>
+
+
         <div>
             <fieldset class="fieldset">
-                    <legend class="fieldset-legend">{{ __('Email') }}</legend>
-                    <input value="{{ old('email', $user->email) }}" name="email" type="email "  required autocomplete="username"
-                        class="input w-full @error('email') input-error @enderror" placeholder="name" />
-                    @error('email')
-                        <p class="label text-error">{{ $message }}</p>
-                    @enderror
-                </fieldset>
+                <legend class="fieldset-legend">{{ __('Email') }}</legend>
+                <input value="{{ old('email', $user->email) }}" name="email" type="email" required autocomplete="username"
+                    class="input w-full @error('email') input-error @enderror" placeholder="Email" />
+                @error('email')
+                    <p class="label text-error">{{ $message }}</p>
+                @enderror
+            </fieldset>
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-gray-800">
+                    <p class="text-sm mt-2 text-base-content">
                         {{ __('Your email address is unverified.') }}
 
                         <button form="send-verification"
-                        class="btn btn-link">
+                            class="btn btn-link">
                             {{ __('Click here to re-send the verification email.') }}
                         </button>
                     </p>
@@ -56,16 +58,11 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <button class="btn btn-priamry">{{ __('Save') }}</button>
+            <button class="btn btn-primary">{{ __('Save') }}</button>
 
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-base-content"
-                >{{ __('Saved.') }}</p>
+                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                    class="text-sm text-base-content">{{ __('Saved.') }}</p>
             @endif
         </div>
     </form>

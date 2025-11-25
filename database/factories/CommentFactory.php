@@ -16,16 +16,8 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
-        $created = fake()->dateTimeBetween();
-        $updated = fake()->dateTimeBetween($created);
-        if(rand(0, 9)){
-            $updated = $created;
-        }
-
         return [
-            'body' => fake()->sentences(3, true),
-            'created_at' => $created,
-            'updated_at' => $updated,
+            'body' => fake()->sentences(3, true)
         ];
     }
 }

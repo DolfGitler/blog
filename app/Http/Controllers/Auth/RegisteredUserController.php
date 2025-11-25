@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-     public function store(Request $request): RedirectResponse|User
+    public function store(Request $request): RedirectResponse | User
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -44,11 +44,10 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
-         if($request->wantsJson()) {
+        if($request->wantsJson()){
             return $user;
         }
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('home', absolute: false));
     }
 }

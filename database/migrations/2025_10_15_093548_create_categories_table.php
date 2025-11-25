@@ -1,4 +1,4 @@
-   <?php
+<?php
 
 use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
@@ -19,8 +19,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('posts', function (Blueprint $table) {
-            $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
+        Schema::table('posts',function (Blueprint $table){
+            $table->foreignIdFor(Category::class)->nullable()->constrained()->cascadeOnDelete();
         });
     }
 
@@ -29,6 +29,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+          Schema::table('posts',function (Blueprint $table){
+            $table->dropConstrainedForeignId(Category::class);
+        });
         Schema::dropIfExists('categories');
     }
 };

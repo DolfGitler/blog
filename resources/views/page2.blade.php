@@ -1,6 +1,5 @@
 @extends('partials.layout')
-@section('title', 'Home page')
+@section('title', 'Home Page')
 @section('content')
-<h1 class="text-3xl">Page2</h1>
-
+<h1 class="text-3xl">Page 2</h1>
 @endsection

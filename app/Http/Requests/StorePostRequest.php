@@ -23,8 +23,8 @@ class StorePostRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'body' => '',
-            'images.*' => 'image'
+            'body' => 'required',
+            'image.*' => 'image'
         ];
     }
 }

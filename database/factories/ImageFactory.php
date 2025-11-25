@@ -17,7 +17,7 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => 'https://picsum.photos/seed/' . fake()->unique()->uuid . '/640/480'
+         'path' => 'https://picsum.photos/seed/' . fake()->unique()->uuid . '/640/480'
         ];
     }
 }

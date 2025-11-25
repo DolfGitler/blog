@@ -3,10 +3,6 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Middleware\HandleCors;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
-
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,12 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo('/');
+    })
+    ->withMiddleware(function (Middleware $middleware): void {
+    $middleware->statefulApi();
+})
+
+    ->withExceptions(function (Exceptions $exceptions): void {
         //
-     $middleware->statefulApi();
-          $middleware->api(prepend: [
-            StartSession::class,
-            ShareErrorsFromSession::class,
-            HandleCors::class,
-        ]);
-    })->withExceptions(function (Exceptions $exceptions): void {
     })->create();
+

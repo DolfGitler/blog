@@ -16,22 +16,22 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $created = fake()->dateTimeBetween();
-        $updated = fake()->dateTimeBetween($created);
+
+        $created= fake()->dateTimeBetween();
+        $updated= fake()->dateTimeBetween($created);
         if(rand(0, 9)){
             $updated = $created;
+
         }
-        // $image = null;
-        // if(rand(0, 9)) {
-        //     $image = 'https://picsum.photos/seed/' . fake()->unique()->uuid . '/640/480';
-        // }
+
 
         return [
-            'title' => fake()->sentence,
+            'title' => fake()->sentence(),
             'body' => fake()->paragraphs(6, true),
-            'created_at' => fake()->dateTimebetween(),
-            'updated_at' => fake()->dateTimebetween(),
-            // 'image' => $image,
+            'created_at'=> $created,
+            'updated_at'=> $updated,
+
+
         ];
     }
 }

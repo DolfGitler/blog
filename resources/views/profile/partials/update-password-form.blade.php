@@ -13,26 +13,37 @@
         @csrf
         @method('put')
 
-        <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
-        </div>
+         <fieldset class="fieldset">
+                    <legend class="fieldset-legend">{{ __('Current Password') }}</legend>
+                    <input value="{{ old('current_password') }}" name="current_password" type="password" required
+                        autocomplete="current_password" class="input w-full @error('current_password') input-error @enderror"
+                        placeholder="Password" />
+                    @error('current_password')
+                        <p class="label text-error">{{ $message }}</p>
+                    @enderror
+                </fieldset>
 
-        <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-        </div>
+           <fieldset class="fieldset">
+                    <legend class="fieldset-legend">{{ __('New Password') }}</legend>
+                    <input value="{{ old('new_password') }}" name="password" type="password" required
+                        autocomplete="new_password" class="input w-full @error('new_password') input-error @enderror"
+                        placeholder="Password" />
+                    @error('new_password')
+                        <p class="label text-error">{{ $message }}</p>
+                    @enderror
+                </fieldset>
 
-        <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-        </div>
-
+             <fieldset class="fieldset">
+                    <legend class="fieldset-legend">{{ __('Confirm Password') }}</legend>
+                    <input value="{{ old('password_confirmation') }}" name="password_confirmation" type="password" required
+                        autocomplete="new_password" class="input w-full @error('password_confirmation') input-error @enderror"
+                        placeholder="Password" />
+                    @error('password_confirmation')
+                        <p class="label text-error">{{ $message }}</p>
+                    @enderror
+                </fieldset>
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <button class="btn btn-primary">{{ __('Save') }}</button>
 
             @if (session('status') === 'password-updated')
                 <p
